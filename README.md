@@ -4,4 +4,4 @@
 [![Latest version](https://img.shields.io/packagist/v/adata-team/healthchecker)](https://packagist.org/packages/adata-team/healthchecker)
 [![Downloads](https://img.shields.io/packagist/dt/adata-team/healthchecker)](https://packagist.org/packages/adata-team/healthchecker)
 
-composer require adata-team/healthchecker
+`composer require adata-team/healthchecker`
