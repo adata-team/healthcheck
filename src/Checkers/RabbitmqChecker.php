@@ -19,11 +19,11 @@ class RabbitmqChecker implements CheckerInterface, HealthEntity
      */
     public static function check(array $config): string
     {
-        $status    = self::STATUS_SUCCESSFUL;
+        $status = self::STATUS_SUCCESSFUL;
 
         try {
             $timeout = self::DEFAULT_TIMEOUT;
-            $port = self::DEFAULT_RABBITMQ_PORT;
+            $port    = self::DEFAULT_RABBITMQ_PORT;
 
             if (isset($config['timeout']) && !empty($config['timeout'])) {
                 $timeout = $config['timeout'];
@@ -33,8 +33,8 @@ class RabbitmqChecker implements CheckerInterface, HealthEntity
                 $port = $config['port'];
             }
             
-            $url           = sprintf('%s:%s/api/nodes', $config['host'], $config['port']);
-            $authorization = ['auth' => [$config['user'], $config['password']]];
+            $url           = sprintf('%s:%s/api/nodes', $config['host'], $port);
+            $authorization = ['auth' => [$config['user'], $config['password']], 'timeout' => $timeout];
             $client        = new Client();
             $request       = $client->get($url, $authorization);
             $response      = json_decode($request->getBody()->getContents(), true);
