@@ -12,12 +12,11 @@ abstract class AbstractChecker
     /**
      * Run checker
      *
-     * @param string     $service
-     * @param array|null $configuration
+     * @param string $service
      *
      * @return array
      */
-    public function run($service): array
+    public static function run(string $service): array
     {
         $config    = config(sprintf('health.services.%s', $service));
         $timeStart = microtime(true);
