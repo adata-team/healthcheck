@@ -1,6 +1,8 @@
 {
   "name":              "adata-team/healthchecker",
+  "type": 			   "library",
   "description":       "Package for check some services to health",
+  "homepage": 		   "https://github.com/adata-team/healthcheck",
   "keywords":          [
 	"health",
 	"check",
