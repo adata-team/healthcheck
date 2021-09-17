@@ -13,8 +13,6 @@ class HealthController
 {
     /**
      * Health check
-     *
-     * @throws Exception
      */
     public function index()
     {
