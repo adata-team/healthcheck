@@ -36,6 +36,7 @@ return [
         'elastic'     => Adata\HealthChecker\Checkers\ElasticsearchChecker::class,
         'fileServer'  => Adata\HealthChecker\Checkers\FileServerChecker::class,
         'arango'      => Adata\HealthChecker\Checkers\ArangoChecker::class,
+        'mail'        => Adata\HealthChecker\Checkers\MailChecker::class,
     ],
 
     // Routing settings
@@ -87,6 +88,13 @@ return [
     // |      (string) database        - Arango database name for the test                                             |
     // |      (int) timeout            - Connection timeout (Default: 3)                                               |
     // |---------------------------------------------------------------------------------------------------------------|
+    // | 9. mail                       - Mail server check                                                             |
+    // |      (string) host            - Mail server host                                                              |
+    // |      (string) port            - Connection port (Default: 25)                                                 |
+    // |      (string) username        - Username for authentication to mail server                                    |
+    // |      (string) password        - Password for authentication to mail server                                    |
+    // |      (int) timeout            - Connection timeout (Default: 3)                                               |
+    // |---------------------------------------------------------------------------------------------------------------|
     'services'               => [
         'db'         => [
             'type'        => 'database',
@@ -133,6 +141,14 @@ return [
             'database' => 'test',
             'timeout'  => 5,
             'query'    => 'return true',
+        ],
+        'mail'        => [
+            'type'     => 'mail',
+            'host'     => '127.0.0.1',
+            'port'     => 25,
+            'username' => 'test',
+            'password' => 'secret',
+            'timeout'  => 3,
         ],
     ],
 ];
