@@ -35,10 +35,10 @@ class MailChecker implements CheckerInterface, HealthEntity, MailEntity
 
             $sock = fsockopen(
                 $config['host'],
-                $config['port'],
+                $port,
                 $errno,
                 $errstr,
-                $config['timeout']
+                $timeout
             );
 
             if(empty($sock)) {
