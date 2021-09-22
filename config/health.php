@@ -91,27 +91,25 @@ return [
     // | 9. mail                       - Mail server check                                                             |
     // |      (string) host            - Mail server host                                                              |
     // |      (string) port            - Connection port (Default: 25)                                                 |
-    // |      (string) username        - Username for authentication to mail server                                    |
-    // |      (string) password        - Password for authentication to mail server                                    |
     // |      (int) timeout            - Connection timeout (Default: 3)                                               |
     // |---------------------------------------------------------------------------------------------------------------|
     'services'               => [
-        'db'         => [
+        'db'          => [
             'type'        => 'database',
             'connections' => ['pgsql'],
         ],
-        'cache'      => [
+        'cache'       => [
             'type'    => 'redis',
             'host'    => '127.0.0.1',
             'port'    => 6379,
             'timeout' => 2,
         ],
-        'fileServer' => [
+        'fileServer'  => [
             'type'         => 'fileServer',
             'mounted_path' => '/mnt',
             'dir'          => '/mnt/some/folder',
         ],
-        'queue'      => [
+        'queue'       => [
             'type'     => 'rabbitmq',
             'host'     => '127.0.0.1',
             'port'     => 15672,
@@ -119,21 +117,21 @@ return [
             'password' => 'secret',
             'timeout'  => 5,
         ],
-        'search_api' => [
+        'search_api'  => [
             'type'  => 'elastic',
             'hosts' => ['127.0.0.1:9200'],
         ],
-        'api' => [
+        'api'         => [
             'type'    => 'healthCheck',
             'url'     => 'https://example.com/health',
             'timeout' => 2,
         ],
-        'another_api'     => [
+        'another_api' => [
             'type'    => 'http',
             'url'     => 'https://example.com',
             'timeout' => 2,
         ],
-        'arango' => [
+        'arango'      => [
             'type'     => 'arango',
             'host'     => '127.0.0.1',
             'port'     => 8529,
@@ -146,8 +144,6 @@ return [
             'type'     => 'mail',
             'host'     => '127.0.0.1',
             'port'     => 25,
-            'username' => 'test',
-            'password' => 'secret',
             'timeout'  => 3,
         ],
     ],

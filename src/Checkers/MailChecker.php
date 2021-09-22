@@ -35,10 +35,10 @@ class MailChecker implements CheckerInterface, HealthEntity, MailEntity
 
             $sock = fsockopen(
                 $config['host'],
-                $config['port'],
+                $port,
                 $errno,
                 $errstr,
-                $config['timeout']
+                $timeout
             );
 
             if(empty($sock)) {
@@ -52,23 +52,11 @@ class MailChecker implements CheckerInterface, HealthEntity, MailEntity
             }
 
             $data = [
-                'auth'     => MailHelper::checkResponseCode($sock,
-                    self::AUTH_MAIL_COMMAND,
-                    self::RESPONSE_SERVER_CHALLENGE
-                ),
-                'username' => MailHelper::checkResponseCode($sock,
-                    base64_encode($config['username']),
-                    self::RESPONSE_SERVER_CHALLENGE
-                ),
-                'password' => MailHelper::checkResponseCode($sock,
-                    base64_encode($config['password']),
-                    self::RESPONSE_AUTH_SUCCESS
-                ),
-                'hello'    => MailHelper::checkResponseCode($sock,
+                'hello' => MailHelper::checkResponseCode($sock,
                     self::HELO_MAIL_COMMAND,
                     self::RESPONSE_COMPLETED
                 ),
-                'bye'      => MailHelper::checkResponseCode($sock,
+                'bye'   => MailHelper::checkResponseCode($sock,
                     self::QUIT_MAIL_COMMAND,
                     self::RESPONSE_GOODBYE
                 ),
