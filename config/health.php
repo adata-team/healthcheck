@@ -91,8 +91,6 @@ return [
     // | 9. mail                       - Mail server check                                                             |
     // |      (string) host            - Mail server host                                                              |
     // |      (string) port            - Connection port (Default: 25)                                                 |
-    // |      (string) username        - Username for authentication to mail server                                    |
-    // |      (string) password        - Password for authentication to mail server                                    |
     // |      (int) timeout            - Connection timeout (Default: 3)                                               |
     // |---------------------------------------------------------------------------------------------------------------|
     'services'               => [
@@ -146,8 +144,6 @@ return [
             'type'     => 'mail',
             'host'     => '127.0.0.1',
             'port'     => 25,
-            'username' => 'test',
-            'password' => 'secret',
             'timeout'  => 3,
         ],
     ],
