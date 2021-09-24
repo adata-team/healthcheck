@@ -55,6 +55,7 @@ return [
     // |      (int) port               - Connection port (Default: 15672)                                              |
     // |      (string) user            - User (Default: guest)                                                         |
     // |      (string) password        - Password (Default: guest)                                                     |
+    // |      (int) timeout            - Connection timeout (Default: 3)                                               |
     // |---------------------------------------------------------------------------------------------------------------|
     // | 2. redis                      - Cache (checked with Predis\Client)                                            |
     // |      (string) host            - Server host                                                                   |
