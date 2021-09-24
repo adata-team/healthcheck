@@ -8,11 +8,11 @@
 
 ## Quick start for Lumen application 
 
-###1. Install via composer:
+### 1. Install via composer:
 ```shell
 composer require adata-team/healthchecker
 ```
-###2. Make configuration file in `config/health.php` with content
+### 2. Make configuration file in `config/health.php` with content
 ```php
 <?php
 
@@ -30,7 +30,7 @@ The above code is the minimum to run this plugin.
 * check_prefix - health route prefix
 * check_name   - route name
 * url          - url where healthcheck will be available
-###3. Register service provider in Lumen `bootstrap/app.php`
+### 3. Register service provider in Lumen `bootstrap/app.php`
 ```php
 $app->register(Adata\HealthChecker\HealthCheckerProvider::class);
 ```
