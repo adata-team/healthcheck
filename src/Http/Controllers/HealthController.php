@@ -5,6 +5,7 @@ namespace Adata\HealthChecker\Http\Controllers;
 use Adata\HealthChecker\Checkers\AbstractChecker;
 use Adata\HealthChecker\Helpers\StatusConnectionHelper;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 
 /**
  * HealthController class
@@ -14,7 +15,7 @@ class HealthController
     /**
      * Health check
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $result          = ['app' => config('health.app_name')];
         $dataConnections = [];
@@ -33,8 +34,7 @@ class HealthController
         config('health.enable_time_check')   ?
             $result['execution'] = round(
                 microtime(true) - $apiStartTime,
-                config('health.precision_time', 2)
-        ) : null;
+                config('health.precision_time', 2)) : null;
         config('health.enable_color_status') ?
             $result['health'] = StatusConnectionHelper::getColorStatus($dataConnections) : null;
 
