@@ -26,10 +26,14 @@ return [
 ];
 ```
 The above code is the minimum to run this plugin.
-* group_prefix - the name of the route group, for health
-* check_prefix - health route prefix
-* check_name   - route name
-* url          - url where healthcheck will be available
+```phpregexp
+group_prefix - the name of the route group, for health
+check_prefix - health route prefix
+check_name   - route name
+url          - url where healthcheck will be available
+```
+
+See full documentation in Examples folder
 ### 3. Register service provider in Lumen `bootstrap/app.php`
 ```php
 $app->register(Adata\HealthChecker\HealthCheckerProvider::class);
