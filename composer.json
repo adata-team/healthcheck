@@ -1,8 +1,8 @@
 {
   "name":              "adata-team/healthchecker",
-  "type": 			   "library",
+  "type":              "library",
   "description":       "Package for check some services to health",
-  "homepage": 		   "https://github.com/adata-team/healthcheck",
+  "homepage":          "https://github.com/adata-team/healthcheck",
   "keywords":          [
 	"health",
 	"check",
@@ -23,11 +23,11 @@
 	}
   ],
   "require":           {
-	"php": ">=7.3",
-	"guzzlehttp/guzzle": ">=7.0",
-	"phpunit/phpunit": "^9.0",
-	"illuminate/config": "^8.0",
-	"illuminate/support": "^8.0",
+	"php":                     ">=7.3",
+	"guzzlehttp/guzzle":       "^7.0",
+	"phpunit/phpunit":         "^9.0",
+	"illuminate/config":       "^8.0",
+	"illuminate/support":      "^8.0",
 	"symfony/http-foundation": "^5.1"
   },
   "autoload":          {
@@ -35,12 +35,12 @@
 	  "Adata\\HealthChecker\\": "src/"
 	}
   },
-  "autoload-dev": {
+  "autoload-dev":      {
 	"psr-4": {
 	  "Tests\\": "tests"
 	}
   },
-  "scripts": {
+  "scripts":           {
 	"test": "phpunit"
   }
 }
