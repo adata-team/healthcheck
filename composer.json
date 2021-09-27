@@ -23,7 +23,7 @@
 	}
   ],
   "require":           {
-	"php": ">=7.3",
+	"php": "^7.3|^8.0",
 	"laravel/lumen-framework": "~7.0|^8.0",
 	"guzzlehttp/guzzle": "^7.0",
 	"illuminate/config": "~7.0|^8.0",
