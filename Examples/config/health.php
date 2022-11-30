@@ -45,8 +45,8 @@ return [
         'check_prefix' => 'check',
         'check_name'   => 'healthCheck',
         'url'          => '/health/check',
-		'active_url'   => '/healthz',
-	],
+        'active_url'   => '/healthz',
+    ],
 
     // |---------------------------------------------------------------------------------------------------------------|
     // |                                              SERVICE TYPES:                                                   |
@@ -143,10 +143,10 @@ return [
             'query'    => 'return true',
         ],
         'mail'        => [
-            'type'     => 'mail',
-            'host'     => '127.0.0.1',
-            'port'     => 25,
-            'timeout'  => 3,
+            'type'    => 'mail',
+            'host'    => '127.0.0.1',
+            'port'    => 25,
+            'timeout' => 3,
         ],
     ],
 ];
