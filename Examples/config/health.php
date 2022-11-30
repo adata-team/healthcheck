@@ -121,6 +121,9 @@ return [
         'search_api'  => [
             'type'  => 'elastic',
             'hosts' => ['127.0.0.1:9200'],
+			'api_id'  => 'someAPIID',
+			'api_key' => 'someAPIKey',
+			'timeout' => 3,
         ],
         'api'         => [
             'type'    => 'healthCheck',
