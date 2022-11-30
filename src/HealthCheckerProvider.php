@@ -4,6 +4,7 @@ namespace Adata\HealthChecker;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 
 class HealthCheckerProvider extends ServiceProvider
 {
@@ -23,5 +24,9 @@ class HealthCheckerProvider extends ServiceProvider
                 ]
             ));
         });
+
+		Route::get(config('health.router.active_url'), function () {
+            return response(null, Response::HTTP_OK);
+		});
     }
 }

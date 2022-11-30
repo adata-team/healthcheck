@@ -45,7 +45,8 @@ return [
         'check_prefix' => 'check',
         'check_name'   => 'healthCheck',
         'url'          => '/health/check',
-    ],
+		'active_url'   => '/healthz',
+	],
 
     // |---------------------------------------------------------------------------------------------------------------|
     // |                                              SERVICE TYPES:                                                   |
