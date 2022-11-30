@@ -69,6 +69,11 @@ interface HealthEntity
     public const DEFAULT_RABBITMQ_PORT = 15672;
 
     /**
+     * Default RabbitMQ port
+     */
+    public const DEFAULT_CLICKHOUSE_PORT = 9000;
+
+    /**
      * Default Mail server port
      */
     public const DEFAULT_MAIL_PORT = 25;

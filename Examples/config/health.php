@@ -37,8 +37,8 @@ return [
         'fileServer'  => Adata\HealthChecker\Checkers\FileServerChecker::class,
         'arango'      => Adata\HealthChecker\Checkers\ArangoChecker::class,
         'mail'        => Adata\HealthChecker\Checkers\MailChecker::class,
-		'clickhouse'  => Adata\HealthChecker\Checkers\ClickHouseChecker::class,
-	],
+        'clickhouse'  => Adata\HealthChecker\Checkers\ClickHouseChecker::class,
+    ],
 
     // Routing settings
     'router'                 => [
@@ -95,11 +95,11 @@ return [
     // |      (string) port            - Connection port (Default: 25)                                                 |
     // |      (int) timeout            - Connection timeout (Default: 3)                                               |
     // |---------------------------------------------------------------------------------------------------------------|
-	// | 10. clickhouse                - ClickHouse availability check                                                             |
-	// |      (string) host            - Server host                                                              |
-	// |      (string) port            - Server port                                                 |
-	// |      (int) timeout            - Connection timeout (Default: 2)                                               |
-	// |---------------------------------------------------------------------------------------------------------------|
+    // | 10. clickhouse                - ClickHouse availability check                                                             |
+    // |      (string) host            - Server host                                                              |
+    // |      (string) port            - Server port                                                 |
+    // |      (int) timeout            - Connection timeout (Default: 2)                                               |
+    // |---------------------------------------------------------------------------------------------------------------|
     'services'               => [
         'db'          => [
             'type'        => 'database',
@@ -148,16 +148,16 @@ return [
             'query'    => 'return true',
         ],
         'mail'        => [
-            'type'     => 'mail',
-            'host'     => '127.0.0.1',
-            'port'     => 25,
-            'timeout'  => 3,
+            'type'    => 'mail',
+            'host'    => '127.0.0.1',
+            'port'    => 25,
+            'timeout' => 3,
         ],
-		'clickhouse'          => [
-			'type'    => 'clickhouse',
-			'host'    => '127.0.0.1',
-			'port'    => 31126,
-			'timeout' => 2,
-		],
+        'clickhouse'  => [
+            'type'    => 'clickhouse',
+            'host'    => '127.0.0.1',
+            'port'    => 9000,
+            'timeout' => 2,
+        ],
     ],
 ];
