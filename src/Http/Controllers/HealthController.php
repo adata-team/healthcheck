@@ -6,6 +6,7 @@ use Adata\HealthChecker\Checkers\AbstractChecker;
 use Adata\HealthChecker\Helpers\StatusConnectionHelper;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 
 /**
  * HealthController class
@@ -42,6 +43,9 @@ class HealthController
             $result['services'] = $dataConnections;
         }
 
-        return response()->json($result);
+        $requestHash = Str::random();
+        $result['request_id'] = $requestHash;
+
+        return response()->json($result)->header('HealthCheckRequestId', $requestHash);
     }
 }
