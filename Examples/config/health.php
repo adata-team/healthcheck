@@ -40,11 +40,18 @@ return [
     ],
 
     // Routing settings
-    'router'                 => [
+    'router' => [
         'group_prefix' => 'health',
         'check_prefix' => 'check',
         'check_name'   => 'healthCheck',
         'url'          => '/health/check',
+    ],
+
+    'active' => [
+        'group_prefix'  => 'health',
+        'active_prefix' => 'z',
+        'active_name'   => 'healthZ',
+        'url'           => '/healthz',
     ],
 
     // |---------------------------------------------------------------------------------------------------------------|
@@ -142,10 +149,10 @@ return [
             'query'    => 'return true',
         ],
         'mail'        => [
-            'type'     => 'mail',
-            'host'     => '127.0.0.1',
-            'port'     => 25,
-            'timeout'  => 3,
+            'type'    => 'mail',
+            'host'    => '127.0.0.1',
+            'port'    => 25,
+            'timeout' => 3,
         ],
     ],
 ];
