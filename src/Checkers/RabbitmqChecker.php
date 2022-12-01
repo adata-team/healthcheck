@@ -4,20 +4,31 @@ namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 
 /**
  * RabbitmqChecker class
- * 
+ *
  * @type = rabbitmq
  */
 class RabbitmqChecker implements CheckerInterface, HealthEntity
 {
+    /** @var Client */
+    private $guzzleClient;
+
+    /** @var array */
+    private $config;
+
+    public function __construct(Client $guzzleClient, array $config)
+    {
+        $this->guzzleClient = $guzzleClient;
+        $this->config       = $config;
+    }
+
     /**
      * @inheritdoc
      */
-    public static function check(array $config): string
+    public function check(): string
     {
         $status = self::STATUS_SUCCESSFUL;
 
@@ -25,18 +36,17 @@ class RabbitmqChecker implements CheckerInterface, HealthEntity
             $timeout = self::DEFAULT_TIMEOUT;
             $port    = self::DEFAULT_RABBITMQ_PORT;
 
-            if (isset($config['timeout']) && !empty($config['timeout'])) {
-                $timeout = $config['timeout'];
+            if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
+                $timeout = $this->config['timeout'];
             }
 
-            if (isset($config['port']) && !empty($config['port'])) {
-                $port = $config['port'];
+            if (isset($this->config['port']) && !empty($this->config['port'])) {
+                $port = $this->config['port'];
             }
-            
-            $url           = sprintf('%s:%s/api/nodes', $config['host'], $port);
-            $authorization = ['auth' => [$config['user'], $config['password']], 'timeout' => $timeout];
-            $client        = new Client();
-            $request       = $client->get($url, $authorization);
+
+            $url           = sprintf('%s:%s/api/nodes', $this->config['host'], $port);
+            $authorization = ['auth' => [$this->config['user'], $this->config['password']], 'timeout' => $timeout];
+            $request       = $this->guzzleClient->get($url, $authorization);
             $response      = json_decode($request->getBody()->getContents(), true);
 
             if (!isset($response[0]['running']) || !$response[0]['running']) {

@@ -3,6 +3,7 @@
 namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
+use GuzzleHttp\Client;
 
 /**
  * AbstractChecker class
@@ -26,8 +27,8 @@ abstract class AbstractChecker
 
         try {
             if (isset($classMap[$type]) && class_exists($classMap[$type])) {
-                $service = new $classMap[$type];
-                $status  = $service::check($config);
+                $service = new $classMap[$type](new Client(), $config);
+                $status  = $service->check();
             }
         } catch (\Exception $exception) {
             $status = HealthEntity::STATUS_FAIL;
