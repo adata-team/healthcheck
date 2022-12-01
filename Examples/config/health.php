@@ -40,12 +40,18 @@ return [
     ],
 
     // Routing settings
-    'router'                 => [
+    'router' => [
         'group_prefix' => 'health',
         'check_prefix' => 'check',
         'check_name'   => 'healthCheck',
         'url'          => '/health/check',
-        'active_url'   => '/healthz',
+    ],
+
+    'active' => [
+        'group_prefix'  => 'health',
+        'active_prefix' => 'z',
+        'active_name'   => 'healthZ',
+        'url'           => '/healthz',
     ],
 
     // |---------------------------------------------------------------------------------------------------------------|

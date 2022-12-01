@@ -18,15 +18,23 @@ class HealthCheckerProvider extends ServiceProvider
         Route::group(array_filter(['as' => config('health.router.group_prefix', 'health')]), function () {
             Route::get(config('health.router.url'), array_filter(
                 [
-                    'as' => config('health.router.check_prefix', 'check'),
+                    'as'   => config('health.router.check_prefix', 'check'),
                     'uses' => 'Adata\HealthChecker\Http\Controllers\HealthController@index',
                     'name' => config('health.router.check_name', 'check_name')
                 ]
             ));
         });
 
-		Route::get(config('health.router.active_url'), function () {
-            return response(null, Response::HTTP_OK);
-		});
+        Route::group(array_filter(['as' => config('health.active.group_prefix', 'health')]), function () {
+            Route::get(config('health.active.url'),
+                [
+                    'as'   => config('health.active.active_prefix', 'z'),
+                    'name' => config('health.active.active_name', 'healthZ'),
+                    function () {
+                        return response(null, Response::HTTP_OK);
+                    }
+                ]
+            );
+        });
     }
 }
