@@ -18,9 +18,13 @@ class DatabaseChecker implements CheckerInterface, HealthEntity
     /** @var array */
     private $config;
 
+    /** @var DatabaseHelper */
+    private $dbHelper;
+
     public function __construct(Client $guzzleClient, array $config)
     {
-        $this->config = $config;
+        $this->config   = $config;
+        $this->dbHelper = new DatabaseHelper();
     }
 
     /**
@@ -37,13 +41,13 @@ class DatabaseChecker implements CheckerInterface, HealthEntity
                 !empty($this->config['connections'])) {
                 foreach ($this->config['connections'] as $connection) {
                     if (is_string($connection)) {
-                        if (!DatabaseHelper::checkConnection($connection)) {
+                        if (!$this->dbHelper->checkConnection($connection)) {
                             $status = self::STATUS_FAIL;
                         }
                     }
                 }
             } else {
-                if (!DatabaseHelper::checkConnection(DB::getDefaultConnection())) {
+                if (!$this->dbHelper->checkConnection(DB::getDefaultConnection())) {
                     $status = self::STATUS_FAIL;
                 }
             }
