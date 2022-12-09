@@ -4,6 +4,7 @@ namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
 
@@ -40,9 +41,17 @@ class ElasticsearchChecker implements CheckerInterface, HealthEntity
                 $timeout = $this->config['timeout'];
             }
 
-            $normalStatuses = config('health.allowed_cluster_health', ['green']);
-            $apiId          = data_get($this->config, 'api_id');
-            $apiKey         = data_get($this->config, 'api_key');
+            // i had to write some shit in order to run test
+            // TODO refactor
+            $normalStatuses = [];
+            try {
+                $normalStatuses = config('health.allowed_cluster_health', ['green']);
+            } catch (BindingResolutionException $bindingResolutionException) {
+                $normalStatuses[] = 'green';
+            }
+            
+            $apiId  = data_get($this->config, 'api_id');
+            $apiKey = data_get($this->config, 'api_key');
 
             foreach ($this->config['hosts'] as $host) {
                 $response     = $this->guzzleClient->get(sprintf('%s/_cluster/health', $host),
