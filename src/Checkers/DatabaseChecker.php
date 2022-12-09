@@ -40,16 +40,12 @@ class DatabaseChecker implements CheckerInterface, HealthEntity
                 is_array($this->config['connections']) &&
                 !empty($this->config['connections'])) {
                 foreach ($this->config['connections'] as $connection) {
-                    if (is_string($connection)) {
-                        if (!$this->dbHelper->checkConnection($connection)) {
-                            $status = self::STATUS_FAIL;
-                        }
+                    if (is_string($connection) && !$this->dbHelper->checkConnection($connection)) {
+                        $status = self::STATUS_FAIL;
                     }
                 }
-            } else {
-                if (!$this->dbHelper->checkConnection(DB::getDefaultConnection())) {
-                    $status = self::STATUS_FAIL;
-                }
+            } elseif (!$this->dbHelper->checkConnection(DB::getDefaultConnection())) {
+                $status = self::STATUS_FAIL;
             }
         } catch (\Exception $e) {
             Log::warning('HEALTHCHECK: DatabaseChecker have catch', ['error' => $e->getMessage()]);
