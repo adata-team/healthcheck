@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Checkers;
+namespace Tests\Unit;
 
 use Adata\HealthChecker\Checkers\ArangoChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
@@ -20,8 +20,6 @@ class ArangoCheckerTest extends TestCase
         $this->guzzleClientStub = $this->createStub(Client::class);
         $this->config = [
             'type'     => 'arango',
-            'host'     => env('ARANGO_DB_HOST'),
-            'port'     => env('ARANGO_DB_PORT'),
             'https'    => false,
             'database' => 'avroradata',
             'timeout'  => 5,

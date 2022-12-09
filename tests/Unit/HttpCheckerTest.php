@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Checkers;
+namespace Tests\Unit;
 
 use Adata\HealthChecker\Checkers\HttpChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
+use Illuminate\Support\Env;
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Psr7\Response;
 
@@ -20,7 +21,7 @@ class HttpCheckerTest extends TestCase
         $this->guzzleClientStub = $this->createStub(Client::class);
         $this->config = [
             'type'    => 'http',
-            'url'     => env('MODULE_AUTH_API'),
+            'url'     => Env::get('MODULE_AUTH_API'),
             'timeout' => 2,
         ];
     }

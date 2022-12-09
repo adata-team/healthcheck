@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Checkers;
+namespace Tests\Unit;
 
 use Adata\HealthChecker\Checkers\ArangoChecker;
 use Adata\HealthChecker\Checkers\RabbitmqChecker;

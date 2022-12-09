@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Checkers;
+namespace Tests\Unit;
 
 use Adata\HealthChecker\Checkers\ElasticsearchChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
-use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Psr7\Response;
+use Adata\HealthChecker\Tests\TestCase as TestCase;
 
-class ElasticsearchCheckerTest extends TestCase
+class ElasticsearchTest extends TestCase
 {
     /**
      * @dataProvider getData
