@@ -1,58 +1,53 @@
 <?php
 
-namespace Tests\Unit;
+namespace Adata\HealthChecker\Tests\Unit;
 
 use Adata\HealthChecker\Checkers\HttpChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
-use GuzzleHttp\Client;
-use Illuminate\Support\Env;
-use PHPUnit\Framework\TestCase;
+use Adata\HealthChecker\Tests\TestCase;
 use GuzzleHttp\Psr7\Response;
 
 class HttpCheckerTest extends TestCase
 {
-    private $guzzleClientStub;
-    private $config;
-
-    protected function setUp(): void
+    /**
+     * @dataProvider  getData
+     */
+    public function test(string $expectedHealthStatus, array $config, array $httpResponse)
     {
-        parent::setUp();
+        $this->guzzleClientStub->method('get')->willReturn(
+            new Response($httpResponse['status_code']),
+        );
+        $http   = new HttpChecker($this->guzzleClientStub, $config);
+        $status = $http->check();
 
-        $this->guzzleClientStub = $this->createStub(Client::class);
-        $this->config = [
-            'type'    => 'http',
-            'url'     => Env::get('MODULE_AUTH_API'),
-            'timeout' => 2,
+        $this->assertEquals($expectedHealthStatus, $status);
+    }
+
+    public function getData(): array
+    {
+        return [
+            [
+                'expected_health_status' => HealthEntity::STATUS_SUCCESSFUL,
+                'config'                 => [
+                    'type'    => 'http',
+                    'url'     => 'https://auth.adtdev.kz',
+                    'timeout' => 2,
+                ],
+                'http_response'          => [
+                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                ],
+            ],
+            [
+                'expected_health_status' => HealthEntity::STATUS_FAIL,
+                'config'                 => [
+                    'type'    => 'http',
+                    'url'     => 'https://auth.adtdev.kz',
+                    'timeout' => 2,
+                ],
+                'http_response'          => [
+                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR,
+                ],
+            ],
         ];
-    }
-
-    /**
-     * @test success check
-     */
-    public function successCheckTest()
-    {
-        $this->guzzleClientStub->method('get')->willReturn(
-            new Response(\Symfony\Component\HttpFoundation\Response::HTTP_OK),
-        );
-
-        $http = new HttpChecker($this->guzzleClientStub, $this->config);
-        $status = $http->check();
-
-        $this->assertEquals(HealthEntity::STATUS_SUCCESSFUL, $status);
-    }
-
-    /**
-     * @test fail check
-     */
-    public function failCheckTest()
-    {
-        $this->guzzleClientStub->method('get')->willReturn(
-            new Response(\Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR),
-        );
-
-        $http = new HttpChecker($this->guzzleClientStub, $this->config);
-        $status = $http->check();
-
-        $this->assertEquals(HealthEntity::STATUS_FAIL, $status);
     }
 }

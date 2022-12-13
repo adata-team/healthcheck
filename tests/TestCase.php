@@ -4,9 +4,8 @@ namespace Adata\HealthChecker\Tests;
 
 use Adata\HealthChecker\HealthCheckerProvider;
 use GuzzleHttp\Client;
-use \PHPUnit\Framework\TestCase as BaseTestCase;
 
-class TestCase extends BaseTestCase
+class TestCase extends \Orchestra\Testbench\TestCase
 {
     protected $guzzleClientStub;
 

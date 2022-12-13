@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit;
+namespace Adata\HealthChecker\Tests\Unit;
 
 use Adata\HealthChecker\Checkers\ElasticsearchChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Psr7\Response;
-use Adata\HealthChecker\Tests\TestCase as TestCase;
+use Adata\HealthChecker\Tests\TestCase;
 
 class ElasticsearchTest extends TestCase
 {
@@ -19,9 +19,7 @@ class ElasticsearchTest extends TestCase
             $responses[] = new Response(
                 $response['status_code'],
                 [],
-                json_encode([
-                    'status' => $response['health_status'],
-                ])
+                data_get($response, 'body') ? json_encode($response['body']) : null
             );
         }
 
@@ -44,8 +42,10 @@ class ElasticsearchTest extends TestCase
                 ],
                 'elastic_responses'      => [
                     [
-                        'status_code'   => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
-                        'health_status' => 'green',
+                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                        'body'        => [
+                            'status' => 'green',
+                        ],
                     ],
                 ],
             ],
@@ -57,25 +57,16 @@ class ElasticsearchTest extends TestCase
                 ],
                 'elastic_responses'      => [
                     [
-                        'status_code'   => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
-                        'health_status' => 'green',
+                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                        'body'        => [
+                            'status' => 'green',
+                        ],
                     ],
                     [
-                        'status_code'   => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
-                        'health_status' => 'green',
-                    ],
-                ],
-            ],
-            [
-                'expected_health_status' => HealthEntity::STATUS_FAIL,
-                'config'                 => [
-                    'type'  => 'elastic',
-                    'hosts' => ['10.10.1.6:9200']
-                ],
-                'elastic_responses'      => [
-                    [
-                        'status_code'   => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
-                        'health_status' => 'red',
+                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                        'body'        => [
+                            'status' => 'green',
+                        ],
                     ],
                 ],
             ],
@@ -87,8 +78,25 @@ class ElasticsearchTest extends TestCase
                 ],
                 'elastic_responses'      => [
                     [
-                        'status_code'   => \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR,
-                        'health_status' => 'red',
+                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                        'body'        => [
+                            'status' => 'red',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'expected_health_status' => HealthEntity::STATUS_FAIL,
+                'config'                 => [
+                    'type'  => 'elastic',
+                    'hosts' => ['10.10.1.6:9200']
+                ],
+                'elastic_responses'      => [
+                    [
+                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR,
+                        'body'        => [
+                            'status' => 'red',
+                        ],
                     ],
                 ],
             ],

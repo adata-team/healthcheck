@@ -4,7 +4,6 @@ namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;

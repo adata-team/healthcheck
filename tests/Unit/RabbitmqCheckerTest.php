@@ -1,68 +1,72 @@
 <?php
 
-namespace Tests\Unit;
+namespace Adata\HealthChecker\Tests\Unit;
 
-use Adata\HealthChecker\Checkers\ArangoChecker;
 use Adata\HealthChecker\Checkers\RabbitmqChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
-use GuzzleHttp\Client;
-use PHPUnit\Framework\TestCase;
+use Adata\HealthChecker\Tests\TestCase;
 use GuzzleHttp\Psr7\Response;
 
 class RabbitmqCheckerTest extends TestCase
 {
-    private $guzzleClientStub;
-    private $config;
-
-    protected function setUp(): void
+    /**
+     * @dataProvider  getData
+     */
+    public function test(string $expectedHealthStatus, array $config, array $rabbitResponse)
     {
-        parent::setUp();
+        $this->guzzleClientStub->method('get')->willReturn(
+            new Response(
+                $rabbitResponse['status_code'],
+                [],
+                json_encode($rabbitResponse['body'])
+            ),
+        );
 
-        $this->guzzleClientStub = $this->createStub(Client::class);
-        $this->config = [
-            'type'     => 'rabbitmq',
-            'host'     => '127.0.0.1',
-            'port'     => 5672,
-            'user'     => 'user',
-            'password' => 'password',
+        $rabbit = new RabbitmqChecker($this->guzzleClientStub, $config);
+        $status = $rabbit->check();
+
+        $this->assertEquals($expectedHealthStatus, $status);
+    }
+
+    public function getData(): array
+    {
+        return [
+            [
+                'expected_health_status' => HealthEntity::STATUS_SUCCESSFUL,
+                'config'                 => [
+                    'type'     => 'rabbitmq',
+                    'host'     => '127.0.0.1',
+                    'port'     => 5672,
+                    'user'     => 'user',
+                    'password' => 'password',
+                ],
+                'rabbit_response'        => [
+                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_CREATED,
+                    'body'        => [
+                        [
+                            'running' => true,
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'expected_health_status' => HealthEntity::STATUS_FAIL,
+                'config'                 => [
+                    'type'     => 'rabbitmq',
+                    'host'     => '127.0.0.1',
+                    'port'     => 5672,
+                    'user'     => 'user',
+                    'password' => 'password',
+                ],
+                'rabbit_response'        => [
+                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_CREATED,
+                    'body'        => [
+                        [
+                            'running' => false,
+                        ],
+                    ],
+                ],
+            ],
         ];
-    }
-
-    /**
-     * @test success check
-     */
-    public function successCheckTest()
-    {
-        $this->guzzleClientStub->method('get')->willReturn(
-            new Response(\Symfony\Component\HttpFoundation\Response::HTTP_CREATED, [], json_encode([
-                [
-                    'running' => true,
-                ],
-            ])),
-        );
-
-        $rabbit = new RabbitmqChecker($this->guzzleClientStub, $this->config);
-        $status = $rabbit->check();
-
-        $this->assertEquals(HealthEntity::STATUS_SUCCESSFUL, $status);
-    }
-
-    /**
-     * @test fail check
-     */
-    public function failCheckTest()
-    {
-        $this->guzzleClientStub->method('get')->willReturn(
-            new Response(\Symfony\Component\HttpFoundation\Response::HTTP_CREATED, [], json_encode([
-                [
-                    'running' => false,
-                ],
-            ])),
-        );
-
-        $rabbit = new RabbitmqChecker($this->guzzleClientStub, $this->config);
-        $status = $rabbit->check();
-
-        $this->assertEquals(HealthEntity::STATUS_FAIL, $status);
     }
 }
