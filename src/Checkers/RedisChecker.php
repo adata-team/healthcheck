@@ -8,38 +8,42 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * RedisChecker class
- * 
+ *
  * type = redis
  */
 class RedisChecker implements CheckerInterface, HealthEntity
 {
+    /** @var array */
+    private $config;
+
+    public function __construct(Client $guzzleClient, array $config)
+    {
+        $this->config = $config;
+    }
+
     /**
-     * Check service
-     *
-     * @param array $config
-     *
-     * @return array
+     * @inheritdoc
      */
-    public static function check(array $config): string
+    public function check(): string
     {
         $status = self::STATUS_SUCCESSFUL;
 
         try {
             $timeout = self::DEFAULT_TIMEOUT;
-            
-            if (isset($config['timeout']) && !empty($config['timeout'])) {
-                $timeout = $config['timeout'];
+
+            if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
+                $timeout = $this->config['timeout'];
             }
-            
+
             $socket = fsockopen(
-                (string)$config['host'],
-                (int)$config['port'],
+                (string)$this->config['host'],
+                (int)$this->config['port'],
                 $errCode,
                 $errStr,
-                $config['timeout']
+                $this->config['timeout']
             );
 
-            socket_set_timeout($socket, $config['timeout']);
+            socket_set_timeout($socket, $timeout);
 
             if ($errCode !== 0 && !empty($errStr)) {
                 return self::STATUS_FAIL;
