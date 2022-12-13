@@ -37,17 +37,18 @@ return [
         'fileServer'  => Adata\HealthChecker\Checkers\FileServerChecker::class,
         'arango'      => Adata\HealthChecker\Checkers\ArangoChecker::class,
         'mail'        => Adata\HealthChecker\Checkers\MailChecker::class,
+        'clickhouse'  => Adata\HealthChecker\Checkers\ClickHouseChecker::class,
     ],
 
     // Routing settings
-    'router' => [
+    'router'                 => [
         'group_prefix' => 'health',
         'check_prefix' => 'check',
         'check_name'   => 'healthCheck',
         'url'          => '/health/check',
     ],
 
-    'active' => [
+    'active'   => [
         'group_prefix'  => 'health',
         'active_prefix' => 'z',
         'active_name'   => 'healthZ',
@@ -101,7 +102,12 @@ return [
     // |      (string) port            - Connection port (Default: 25)                                                 |
     // |      (int) timeout            - Connection timeout (Default: 3)                                               |
     // |---------------------------------------------------------------------------------------------------------------|
-    'services'               => [
+    // | 10. clickhouse                - ClickHouse availability check                                                             |
+    // |      (string) host            - Server host                                                              |
+    // |      (string) port            - Server port                                                 |
+    // |      (int) timeout            - Connection timeout (Default: 2)                                               |
+    // |---------------------------------------------------------------------------------------------------------------|
+    'services' => [
         'db'          => [
             'type'        => 'database',
             'connections' => ['pgsql'],
@@ -126,11 +132,11 @@ return [
             'timeout'  => 5,
         ],
         'search_api'  => [
-            'type'  => 'elastic',
-            'hosts' => ['127.0.0.1:9200'],
-			'api_id'  => 'someAPIID',
-			'api_key' => 'someAPIKey',
-			'timeout' => 3,
+            'type'    => 'elastic',
+            'hosts'   => ['127.0.0.1:9200'],
+            'api_id'  => 'someAPIID',
+            'api_key' => 'someAPIKey',
+            'timeout' => 3,
         ],
         'api'         => [
             'type'    => 'healthCheck',
@@ -156,6 +162,12 @@ return [
             'host'    => '127.0.0.1',
             'port'    => 25,
             'timeout' => 3,
+        ],
+        'clickhouse'  => [
+            'type'    => 'clickhouse',
+            'host'    => '127.0.0.1',
+            'port'    => 9000,
+            'timeout' => 2,
         ],
     ],
 ];

@@ -22,9 +22,4 @@ class TestCase extends BaseTestCase
             HealthCheckerProvider::class,
         ];
     }
-
-    protected function getEnvironmentSetUp($app)
-    {
-        // perform environment setup
-    }
 }
