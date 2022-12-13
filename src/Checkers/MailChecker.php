@@ -5,19 +5,28 @@ namespace Adata\HealthChecker\Checkers;
 use Adata\HealthChecker\Entities\HealthEntity;
 use Adata\HealthChecker\Entities\MailEntity;
 use Adata\HealthChecker\Helpers\MailHelper;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
 
 /**
  * MailChecker class
- * 
+ *
  * type = mail
  */
 class MailChecker implements CheckerInterface, HealthEntity, MailEntity
 {
+    /** @var array */
+    private $config;
+
+    public function __construct(Client $guzzleClient, array $config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * @inheritdoc
      */
-    public static function check(array $config): string
+    public function check(): string
     {
         $status = self::STATUS_SUCCESSFUL;
 
@@ -25,23 +34,23 @@ class MailChecker implements CheckerInterface, HealthEntity, MailEntity
             $port    = self::DEFAULT_MAIL_PORT;
             $timeout = self::DEFAULT_TIMEOUT;
 
-            if (isset($config['port']) && !empty($config['port'])) {
-                $port = $config['port'];
+            if (isset($this->config['port']) && !empty($this->config['port'])) {
+                $port = $this->config['port'];
             }
 
-            if (isset($config['timeout']) && !empty($config['timeout'])) {
-                $timeout = $config['timeout'];
+            if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
+                $timeout = $this->config['timeout'];
             }
 
             $sock = fsockopen(
-                $config['host'],
+                $this->config['host'],
                 $port,
                 $errno,
                 $errstr,
                 $timeout
             );
 
-            if(empty($sock)) {
+            if (empty($sock)) {
                 return self::STATUS_FAIL;
             }
 
@@ -61,7 +70,7 @@ class MailChecker implements CheckerInterface, HealthEntity, MailEntity
                     self::RESPONSE_GOODBYE
                 ),
             ];
-            
+
             if (in_array(false, $data, true)) {
                 return self::STATUS_FAIL;
             }

@@ -5,31 +5,46 @@ namespace Adata\HealthChecker\Checkers;
 use Adata\HealthChecker\Entities\HealthEntity;
 use Adata\HealthChecker\Helpers\StatusConnectionHelper;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\HealthCheckerTest;
 
 /**
  * HealthChecker class
- * 
+ *
  * type = healthCheck
+ * @uses HealthCheckerTest
  */
 class HealthChecker implements CheckerInterface, HealthEntity
 {
+    /** @var Client */
+    private $guzzleClient;
+
+    /** @var array */
+    private $config;
+
+    public function __construct(Client $guzzleClient, array $config)
+    {
+        $this->guzzleClient = $guzzleClient;
+        $this->config       = $config;
+    }
+
     /**
      * @inheritdoc
+     * @uses HealthCheckerTest::test()
      */
-    public static function check(array $config): string
+    public function check(): string
     {
-        $status    = self::STATUS_SUCCESSFUL;
+        $status = self::STATUS_SUCCESSFUL;
 
         try {
             $timeout = self::DEFAULT_TIMEOUT;
 
-            if (isset($config['timeout']) && !empty($config['timeout'])) {
-                $timeout = $config['timeout'];
+            if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
+                $timeout = $this->config['timeout'];
             }
 
-            $client   = new Client();
-            $request  = $client->get($config['url'], ['timeout' => $timeout]);
+            $request  = $this->guzzleClient->get($this->config['url'], ['timeout' => $timeout]);
             $response = json_decode($request->getBody()->getContents(), true);
 
             if (isset($response['services'])) {

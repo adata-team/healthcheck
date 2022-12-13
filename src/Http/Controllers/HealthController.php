@@ -7,43 +7,58 @@ use Adata\HealthChecker\Helpers\StatusConnectionHelper;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Config;
+use \Adata\HealthChecker\Tests\Feature\HealthControllerTest;
 
 /**
  * HealthController class
+ * @uses HealthControllerTest
  */
 class HealthController
 {
+    /**
+     * @var array $healthConfig
+     */
+    private $healthConfig;
+
+    public function __construct()
+    {
+        $this->healthConfig = Config::get('health');
+    }
+
     /**
      * Health check
      */
     public function index(): JsonResponse
     {
-        $result          = ['app' => config('health.app_name')];
+        $result          = ['app' => data_get($this->healthConfig, 'app_name')];
         $dataConnections = [];
-        $services        = config('health.services');
-        config('health.enable_time_check') ? $apiStartTime = microtime(true) : $apiStartTime = null;
+        $services        = data_get($this->healthConfig, 'services');
+        data_get($this->healthConfig, 'enable_time_check') ? $apiStartTime = microtime(true) : $apiStartTime = null;
 
         if (!empty($services)) {
             foreach ($services as $key => $service) {
-                $dataConnections[$key] = AbstractChecker::run($key);
+                $dataConnections[$key] = AbstractChecker::run($this->healthConfig, $key);
             }
         }
 
-        config('health.show_host')           ? $result['host']      = $_SERVER['HTTP_HOST'] : null;
-        config('health.show_hostname')       ? $result['hostname']  = exec('hostname') : null;
-        config('health.enable_server_time')  ? $result['time']      = Carbon::now() : null;
-        config('health.enable_time_check')   ?
+        data_get($this->healthConfig, 'show_host') ? $result['host'] = data_get($_SERVER, 'HTTP_HOST') : null;
+        data_get($this->healthConfig, 'show_hostname') ? $result['hostname'] = exec('hostname') : null;
+        data_get($this->healthConfig, 'enable_server_time') ? $result['time'] = Carbon::now() : null;
+
+        data_get($this->healthConfig, 'enable_time_check') ?
             $result['execution'] = round(
                 microtime(true) - $apiStartTime,
-                config('health.precision_time', 2)) : null;
-        config('health.enable_color_status') ?
+                data_get($this->healthConfig, 'precision_time', 2)) : null;
+
+        data_get($this->healthConfig, 'enable_color_status') ?
             $result['health'] = StatusConnectionHelper::getColorStatus($dataConnections) : null;
 
         if (!empty($dataConnections)) {
             $result['services'] = $dataConnections;
         }
 
-        $requestHash = Str::random();
+        $requestHash          = Str::random();
         $result['request_id'] = $requestHash;
 
         return response()->json($result)->header('HealthCheckRequestId', $requestHash);
