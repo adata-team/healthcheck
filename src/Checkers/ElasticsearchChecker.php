@@ -7,11 +7,13 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\ElasticsearchTest;
 
 /**
  * ElasticsearchChecker class
  *
  * type = elastic
+ * @uses ElasticsearchTest
  */
 class ElasticsearchChecker implements CheckerInterface, HealthEntity
 {
@@ -29,6 +31,7 @@ class ElasticsearchChecker implements CheckerInterface, HealthEntity
 
     /**
      * @inheritdoc
+     * @uses ElasticsearchTest::test()
      */
     public function check(): string
     {

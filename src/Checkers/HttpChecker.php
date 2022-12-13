@@ -4,13 +4,16 @@ namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\HttpCheckerTest;
 
 /**
  * HttpChecker class
  *
  * type = http
+ * @uses HttpCheckerTest
  */
 class HttpChecker implements CheckerInterface, HealthEntity
 {
@@ -28,6 +31,7 @@ class HttpChecker implements CheckerInterface, HealthEntity
 
     /**
      * @inheritdoc
+     * @uses HttpCheckerTest::test()
      */
     public function check(): string
     {

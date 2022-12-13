@@ -6,11 +6,13 @@ use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\ArangoCheckerTest;
 
 /**
  * ArangoChecker class
  *
  * type = arango
+ * @uses ArangoCheckerTest
  */
 class ArangoChecker implements CheckerInterface, HealthEntity
 {
@@ -28,6 +30,7 @@ class ArangoChecker implements CheckerInterface, HealthEntity
 
     /**
      * @inheritdoc
+     * @uses ArangoCheckerTest::test()
      */
     public function check(): string
     {

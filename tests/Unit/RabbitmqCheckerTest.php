@@ -6,11 +6,16 @@ use Adata\HealthChecker\Checkers\RabbitmqChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
 use Adata\HealthChecker\Tests\TestCase;
 use GuzzleHttp\Psr7\Response;
+use \Symfony\Component\HttpFoundation\Response as StatusCode;
 
+/**
+ * @covers RabbitmqChecker
+ */
 class RabbitmqCheckerTest extends TestCase
 {
     /**
      * @dataProvider  getData
+     * @covers        RabbitmqChecker::check
      */
     public function test(string $expectedHealthStatus, array $config, array $rabbitResponse)
     {
@@ -41,7 +46,7 @@ class RabbitmqCheckerTest extends TestCase
                     'password' => 'password',
                 ],
                 'rabbit_response'        => [
-                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_CREATED,
+                    'status_code' => StatusCode::HTTP_CREATED,
                     'body'        => [
                         [
                             'running' => true,
@@ -59,7 +64,7 @@ class RabbitmqCheckerTest extends TestCase
                     'password' => 'password',
                 ],
                 'rabbit_response'        => [
-                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_CREATED,
+                    'status_code' => StatusCode::HTTP_CREATED,
                     'body'        => [
                         [
                             'running' => false,

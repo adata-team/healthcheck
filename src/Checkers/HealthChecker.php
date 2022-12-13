@@ -5,12 +5,15 @@ namespace Adata\HealthChecker\Checkers;
 use Adata\HealthChecker\Entities\HealthEntity;
 use Adata\HealthChecker\Helpers\StatusConnectionHelper;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\HealthCheckerTest;
 
 /**
  * HealthChecker class
  *
  * type = healthCheck
+ * @uses HealthCheckerTest
  */
 class HealthChecker implements CheckerInterface, HealthEntity
 {
@@ -28,6 +31,7 @@ class HealthChecker implements CheckerInterface, HealthEntity
 
     /**
      * @inheritdoc
+     * @uses HealthCheckerTest::test()
      */
     public function check(): string
     {

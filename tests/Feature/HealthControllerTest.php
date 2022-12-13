@@ -4,9 +4,19 @@ namespace Adata\HealthChecker\Tests\Feature;
 
 use Adata\HealthChecker\Http\Controllers\HealthController;
 use ReflectionException;
+use Adata\HealthChecker\Tests\TestCase;
 
-class HealthControllerTest extends \Orchestra\Testbench\TestCase
+/**
+ * @covers HealthController
+ */
+class HealthControllerTest extends TestCase
 {
+    /**
+     * @covers HealthController::index
+     *
+     * @return void
+     * @throws ReflectionException
+     */
     public function test()
     {
         $exampleConfigPath = __DIR__ . '/../../Examples/config/health.php';

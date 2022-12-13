@@ -7,12 +7,16 @@ use Adata\HealthChecker\Helpers\StatusConnectionHelper;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Config;
+use \Adata\HealthChecker\Tests\Feature\HealthControllerTest;
 
 /**
- * HealthController class
+ * @uses HealthControllerTest
  */
 class HealthController
 {
+    /**
+     * @var array $healthConfig
+     */
     private $healthConfig;
 
     public function __construct()

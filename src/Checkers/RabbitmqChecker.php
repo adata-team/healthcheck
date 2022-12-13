@@ -5,11 +5,13 @@ namespace Adata\HealthChecker\Checkers;
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\RabbitmqCheckerTest;
 
 /**
  * RabbitmqChecker class
  *
  * @type = rabbitmq
+ * @uses RabbitmqCheckerTest
  */
 class RabbitmqChecker implements CheckerInterface, HealthEntity
 {
@@ -27,6 +29,7 @@ class RabbitmqChecker implements CheckerInterface, HealthEntity
 
     /**
      * @inheritdoc
+     * @uses RabbitmqCheckerTest::test()
      */
     public function check(): string
     {

@@ -6,10 +6,15 @@ use Adata\HealthChecker\Checkers\ArangoChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
 use Adata\HealthChecker\Tests\TestCase;
 use GuzzleHttp\Psr7\Response;
+use \Symfony\Component\HttpFoundation\Response as StatusCode;
 
+/**
+ * @covers ArangoChecker
+ */
 class ArangoCheckerTest extends TestCase
 {
     /**
+     * @covers       ArangoChecker::check
      * @dataProvider getData
      */
     public function test(string $expectedHealthStatus, array $config, array $arangoResponse)
@@ -43,9 +48,9 @@ class ArangoCheckerTest extends TestCase
                     'query'    => 'return true',
                 ],
                 'arango_response'        => [
-                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_CREATED,
+                    'status_code' => StatusCode::HTTP_CREATED,
                     'body'        => [
-                        'code' => \Symfony\Component\HttpFoundation\Response::HTTP_CREATED,
+                        'code' => StatusCode::HTTP_CREATED,
                     ],
                 ],
             ],
@@ -61,7 +66,7 @@ class ArangoCheckerTest extends TestCase
                     'query'    => 'return true',
                 ],
                 'arango_response'        => [
-                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'status_code' => StatusCode::HTTP_INTERNAL_SERVER_ERROR,
                 ],
             ],
             [
@@ -74,7 +79,7 @@ class ArangoCheckerTest extends TestCase
                     'query'   => 'return true',
                 ],
                 'arango_response'        => [
-                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'status_code' => StatusCode::HTTP_INTERNAL_SERVER_ERROR,
                 ],
             ],
         ];

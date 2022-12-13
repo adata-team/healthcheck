@@ -9,10 +9,20 @@ use GuzzleHttp\Client;
 use Adata\HealthChecker\Tests\TestCase;
 use ReflectionClass;
 
+/**
+ * @covers DatabaseChecker
+ */
 class DatabaseCheckerTest extends TestCase
 {
+    /**
+     * @var DatabaseHelper
+     */
+    private $dbHelperStub;
+
+    /**
+     * @var DatabaseChecker
+     */
     private $dbChecker;
-    private $dbHelper;
 
     public function setUp(): void
     {
@@ -32,6 +42,7 @@ class DatabaseCheckerTest extends TestCase
 
     /**
      * @dataProvider getData
+     * @covers       DatabaseChecker::check
      */
     public function test(string $expectedHealthStatus, bool $dbHelperResponse)
     {

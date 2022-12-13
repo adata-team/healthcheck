@@ -6,11 +6,16 @@ use Adata\HealthChecker\Checkers\HttpChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
 use Adata\HealthChecker\Tests\TestCase;
 use GuzzleHttp\Psr7\Response;
+use \Symfony\Component\HttpFoundation\Response as StatusCode;
 
+/**
+ * @covers HttpChecker
+ */
 class HttpCheckerTest extends TestCase
 {
     /**
      * @dataProvider  getData
+     * @covers        HttpChecker::check
      */
     public function test(string $expectedHealthStatus, array $config, array $httpResponse)
     {
@@ -34,7 +39,7 @@ class HttpCheckerTest extends TestCase
                     'timeout' => 2,
                 ],
                 'http_response'          => [
-                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                    'status_code' => StatusCode::HTTP_OK,
                 ],
             ],
             [
@@ -45,7 +50,7 @@ class HttpCheckerTest extends TestCase
                     'timeout' => 2,
                 ],
                 'http_response'          => [
-                    'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'status_code' => StatusCode::HTTP_INTERNAL_SERVER_ERROR,
                 ],
             ],
         ];

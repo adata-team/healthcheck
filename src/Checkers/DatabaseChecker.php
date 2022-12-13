@@ -7,11 +7,13 @@ use Adata\HealthChecker\Helpers\DatabaseHelper;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\DatabaseCheckerTest;
 
 /**
  * DatabaseChecker class
  *
  * type = database
+ * @uses DatabaseCheckerTest
  */
 class DatabaseChecker implements CheckerInterface, HealthEntity
 {
@@ -29,6 +31,7 @@ class DatabaseChecker implements CheckerInterface, HealthEntity
 
     /**
      * @inheritdoc
+     * @uses DatabaseCheckerTest::test()
      */
     public function check(): string
     {
@@ -39,6 +42,7 @@ class DatabaseChecker implements CheckerInterface, HealthEntity
                 isset($this->config['connections']) &&
                 is_array($this->config['connections']) &&
                 !empty($this->config['connections'])) {
+
                 foreach ($this->config['connections'] as $connection) {
                     if (is_string($connection) && !$this->dbHelper->checkConnection($connection)) {
                         $status = self::STATUS_FAIL;

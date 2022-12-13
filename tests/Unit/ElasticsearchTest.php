@@ -5,16 +5,22 @@ namespace Adata\HealthChecker\Tests\Unit;
 use Adata\HealthChecker\Checkers\ElasticsearchChecker;
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Psr7\Response;
+use \Symfony\Component\HttpFoundation\Response as StatusCode;
 use Adata\HealthChecker\Tests\TestCase;
 
+/**
+ * @covers ElasticsearchChecker
+ */
 class ElasticsearchTest extends TestCase
 {
     /**
      * @dataProvider getData
+     * @covers       ElasticsearchChecker::check
      */
     public function test(string $expectedHealthStatus, array $config, array $elasticResponses)
     {
         $responses = [];
+
         foreach ($elasticResponses as $response) {
             $responses[] = new Response(
                 $response['status_code'],
@@ -42,7 +48,7 @@ class ElasticsearchTest extends TestCase
                 ],
                 'elastic_responses'      => [
                     [
-                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                        'status_code' => StatusCode::HTTP_OK,
                         'body'        => [
                             'status' => 'green',
                         ],
@@ -57,13 +63,13 @@ class ElasticsearchTest extends TestCase
                 ],
                 'elastic_responses'      => [
                     [
-                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                        'status_code' => StatusCode::HTTP_OK,
                         'body'        => [
                             'status' => 'green',
                         ],
                     ],
                     [
-                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                        'status_code' => StatusCode::HTTP_OK,
                         'body'        => [
                             'status' => 'green',
                         ],
@@ -78,7 +84,7 @@ class ElasticsearchTest extends TestCase
                 ],
                 'elastic_responses'      => [
                     [
-                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                        'status_code' => StatusCode::HTTP_OK,
                         'body'        => [
                             'status' => 'red',
                         ],
@@ -93,7 +99,7 @@ class ElasticsearchTest extends TestCase
                 ],
                 'elastic_responses'      => [
                     [
-                        'status_code' => \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR,
+                        'status_code' => StatusCode::HTTP_INTERNAL_SERVER_ERROR,
                         'body'        => [
                             'status' => 'red',
                         ],
