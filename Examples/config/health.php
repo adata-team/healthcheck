@@ -48,6 +48,13 @@ return [
         'url'          => '/health/check',
     ],
 
+    'active'   => [
+        'group_prefix'  => 'health',
+        'active_prefix' => 'z',
+        'active_name'   => 'healthZ',
+        'url'           => '/healthz',
+    ],
+
     // |---------------------------------------------------------------------------------------------------------------|
     // |                                              SERVICE TYPES:                                                   |
     // |---------------------------------------------------------------------------------------------------------------|
@@ -100,7 +107,7 @@ return [
     // |      (string) port            - Server port                                                 |
     // |      (int) timeout            - Connection timeout (Default: 2)                                               |
     // |---------------------------------------------------------------------------------------------------------------|
-    'services'               => [
+    'services' => [
         'db'          => [
             'type'        => 'database',
             'connections' => ['pgsql'],
@@ -125,8 +132,11 @@ return [
             'timeout'  => 5,
         ],
         'search_api'  => [
-            'type'  => 'elastic',
-            'hosts' => ['127.0.0.1:9200'],
+            'type'    => 'elastic',
+            'hosts'   => ['127.0.0.1:9200'],
+            'api_id'  => 'someAPIID',
+            'api_key' => 'someAPIKey',
+            'timeout' => 3,
         ],
         'api'         => [
             'type'    => 'healthCheck',

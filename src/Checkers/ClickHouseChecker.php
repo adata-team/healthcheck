@@ -4,24 +4,38 @@ namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
+use \Adata\HealthChecker\Tests\Unit\ClickHouseCheckerTest;
 
 /**
  * ClickHouseChecker class
  *
  * type = clickhouse
+ * @uses ClickHouseCheckerTest
  */
 class ClickHouseChecker implements CheckerInterface, HealthEntity
 {
+    /** @var Client */
+    private $guzzleClient;
+
+    /** @var array */
+    private $config;
+
+    public function __construct(Client $guzzleClient, array $config)
+    {
+        $this->guzzleClient = $guzzleClient;
+        $this->config       = $config;
+    }
+
     /**
-     * Check service
+     * @inheritdoc
      *
-     * @param array $config
-     *
-     * @return array
+     * @return string
+     * @throws GuzzleException
      */
-    public static function check(array $config): string
+    public function check(): string
     {
         $status = self::STATUS_SUCCESSFUL;
 
@@ -30,21 +44,20 @@ class ClickHouseChecker implements CheckerInterface, HealthEntity
             $timeout  = self::DEFAULT_TIMEOUT;
             $port     = self::DEFAULT_CLICKHOUSE_PORT;
 
-            if (isset($config['port']) && !empty($config['port'])) {
-                $port = $config['port'];
+            if (isset($this->config['port']) && !empty($this->config['port'])) {
+                $port = $this->config['port'];
             }
 
-            if (isset($config['timeout']) && !empty($config['timeout'])) {
-                $timeout = $config['timeout'];
+            if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
+                $timeout = $this->config['timeout'];
             }
 
             $url        = sprintf('%s://%s:%s/ping',
                 $protocol,
-                $config['host'],
+                $this->config['host'],
                 $port,
             );
-            $client     = new Client();
-            $response   = $client->get($url, ['timeout' => $timeout]);
+            $response   = $this->guzzleClient->get($url, ['timeout' => $timeout]);
             $statusCode = $response->getStatusCode();
 
             if ($statusCode !== Response::HTTP_OK) {

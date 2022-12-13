@@ -4,32 +4,47 @@ namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\HttpCheckerTest;
 
 /**
  * HttpChecker class
- * 
+ *
  * type = http
+ * @uses HttpCheckerTest
  */
 class HttpChecker implements CheckerInterface, HealthEntity
 {
+    /** @var Client */
+    private $guzzleClient;
+
+    /** @var array */
+    private $config;
+
+    public function __construct(Client $guzzleClient, array $config)
+    {
+        $this->guzzleClient = $guzzleClient;
+        $this->config       = $config;
+    }
+
     /**
      * @inheritdoc
+     * @uses HttpCheckerTest::test()
      */
-    public static function check(array $config): string
+    public function check(): string
     {
         $status = self::STATUS_SUCCESSFUL;
 
         try {
             $timeout = self::DEFAULT_TIMEOUT;
 
-            if (isset($config['timeout']) && !empty($config['timeout'])) {
-                $timeout = $config['timeout'];
+            if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
+                $timeout = $this->config['timeout'];
             }
 
-            $client   = new Client();
-            $request  = $client->get($config['url'], ['timeout' => $timeout]);
+            $request = $this->guzzleClient->get($this->config['url'], ['timeout' => $timeout]);
 
             if ($request->getStatusCode() !== Response::HTTP_OK) {
                 $status = self::STATUS_FAIL;

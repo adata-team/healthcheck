@@ -4,39 +4,67 @@ namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
+use \Adata\HealthChecker\Tests\Unit\ElasticsearchTest;
 
 /**
  * ElasticsearchChecker class
- * 
+ *
  * type = elastic
+ * @uses ElasticsearchTest
  */
 class ElasticsearchChecker implements CheckerInterface, HealthEntity
 {
+    /** @var Client */
+    private $guzzleClient;
+
+    /** @var array */
+    private $config;
+
+    public function __construct(Client $guzzleClient, array $config)
+    {
+        $this->guzzleClient = $guzzleClient;
+        $this->config       = $config;
+    }
+
     /**
-     * @inheritdoc 
+     * @inheritdoc
+     * @uses ElasticsearchTest::test()
      */
-    public static function check(array $config): string
+    public function check(): string
     {
         $status = self::STATUS_SUCCESSFUL;
 
         try {
             $timeout = self::DEFAULT_TIMEOUT;
 
-            if (isset($config['timeout']) && !empty($config['timeout'])) {
-                $timeout = $config['timeout'];
+            if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
+                $timeout = $this->config['timeout'];
             }
 
-            foreach($config['hosts'] as $host) {
-                $normalStatuses = config('health.allowed_cluster_health', ['green']);
-                $client         = new Client();
-                $request        = $client->get(sprintf('%s/_cluster/health', $host), ['timeout' => $timeout]);
-                $statusCode     = $request->getStatusCode() === Response::HTTP_OK;
-                $response       = json_decode($request->getBody()->getContents(), true);
+            $normalStatuses = Config::get('health.allowed_cluster_health', ['green']);
 
-                if (!$statusCode || !in_array($response['status'], $normalStatuses)) {
+            $apiId  = data_get($this->config, 'api_id');
+            $apiKey = data_get($this->config, 'api_key');
+
+            foreach ($this->config['hosts'] as $host) {
+                $response     = $this->guzzleClient->get(sprintf('%s/_cluster/health', $host),
+                    [
+                        'timeout' => $timeout,
+                        'headers' => [
+                            'Accept'        => 'application/json',
+                            'Content-Type'  => 'application/json',
+                            'Authorization' => sprintf('ApiKey %s', base64_encode(sprintf('%s:%s', $apiId, $apiKey)))
+                        ],
+                    ]);
+                $statusCode   = $response->getStatusCode() === Response::HTTP_OK;
+                $responseBody = json_decode($response->getBody()->getContents(), true);
+
+                if (!$statusCode || !in_array($responseBody['status'], $normalStatuses)) {
                     $status = self::STATUS_FAIL;
+                    break;
                 }
             }
         } catch (\Exception $e) {

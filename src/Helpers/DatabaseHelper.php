@@ -17,7 +17,7 @@ class DatabaseHelper
      *
      * @return bool
      */
-    public static function checkConnection(string $connection): bool
+    public function checkConnection(string $connection): bool
     {
         try {
             $check = DB::connection($connection)

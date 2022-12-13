@@ -69,7 +69,7 @@ interface HealthEntity
     public const DEFAULT_RABBITMQ_PORT = 15672;
 
     /**
-     * Default RabbitMQ port
+     * Default ClickHouse port
      */
     public const DEFAULT_CLICKHOUSE_PORT = 9000;
 
