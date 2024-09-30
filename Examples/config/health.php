@@ -168,13 +168,13 @@ return [
             'port'    => 25,
             'timeout' => 3,
         ],
-        'clickhouse'  => [
-            'type'    => 'clickhouse',
-            'host'    => '127.0.0.1',
-            'port'    => 9000,
-            'timeout' => 2,
-        ],
-		'nca_node' => [
+		'clickhouse' => [
+			'type'    => 'clickhouse',
+			'host'    => '127.0.0.1',
+			'port'    => 9000,
+			'timeout' => 2,
+		],
+		'nca_node'   => [
 			'type'    => 'nca_node',
 			'url'     => 'https://example.com',
 			'timeout' => 2,
