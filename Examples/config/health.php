@@ -38,7 +38,7 @@ return [
         'arango'      => Adata\HealthChecker\Checkers\ArangoChecker::class,
         'mail'        => Adata\HealthChecker\Checkers\MailChecker::class,
         'clickhouse'  => Adata\HealthChecker\Checkers\ClickHouseChecker::class,
-		'nca_node'    => Adata\HealthChecker\Checkers\NCANodeChecker::class,
+        'nca_node'    => Adata\HealthChecker\Checkers\NCANodeChecker::class,
     ],
 
     // Routing settings
@@ -108,10 +108,10 @@ return [
     // |      (string) port            - Server port                                                                   |
     // |      (int) timeout            - Connection timeout (Default: 2)                                               |
     // |---------------------------------------------------------------------------------------------------------------|
-	// | 11. nca_node                  - NcaNode server check                                                          |
-	// |      (string) url             - URL health check (URL where health check is available)                        |
-	// |      (int) timeout            - Connection timeout (Default: 3)                                               |
-	// |---------------------------------------------------------------------------------------------------------------|
+    // | 11. nca_node                  - NcaNode server check                                                          |
+    // |      (string) url             - URL health check (URL where health check is available)                        |
+    // |      (int) timeout            - Connection timeout (Default: 3)                                               |
+    // |---------------------------------------------------------------------------------------------------------------|
     'services' => [
         'db'          => [
             'type'        => 'database',
@@ -174,10 +174,10 @@ return [
             'port'    => 9000,
             'timeout' => 2,
         ],
-		'nca_node'    => [
-			'type'    => 'nca_node',
+        'nca_node'    => [
+            'type'    => 'nca_node',
 			'url'     => 'https://example.com',
 			'timeout' => 2,
-		],
+        ],
     ],
 ];

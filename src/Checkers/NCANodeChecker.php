@@ -36,7 +36,7 @@ class NCANodeChecker implements CheckerInterface, HealthEntity
 				$timeout = $this->config['timeout'];
 			}
 
-			$request = $this->guzzleClient->get($this->config['url'] . '/actuator/health', ['timeout' => $timeout]);
+			$request = $this->guzzleClient->get(sprintf('%s/actuator/health', $this->config['url']), ['timeout' => $timeout]);
 
 			if ($request->getStatusCode() !== Response::HTTP_OK) {
 				$status = self::STATUS_FAIL;
