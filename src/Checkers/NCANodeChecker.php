@@ -3,11 +3,12 @@
 namespace Adata\HealthChecker\Checkers;
 
 use Adata\HealthChecker\Entities\HealthEntity;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
-use \Adata\HealthChecker\Tests\Unit\HttpCheckerTest;
+use Adata\HealthChecker\Tests\Unit\HttpCheckerTest;
 
 class NCANodeChecker implements CheckerInterface, HealthEntity
 {
@@ -28,28 +29,28 @@ class NCANodeChecker implements CheckerInterface, HealthEntity
 	 */
 	public function check(): string
 	{
-         $status = self::STATUS_SUCCESSFUL;
+		$status = self::STATUS_SUCCESSFUL;
 
-         try {
-             $timeout = self::DEFAULT_TIMEOUT;
+		try {
+			$timeout = self::DEFAULT_TIMEOUT;
 
-             if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
-		 		$timeout = $this->config['timeout'];
-		 	}
+			if (isset($this->config['timeout']) && !empty($this->config['timeout'])) {
+				$timeout = $this->config['timeout'];
+			}
 
-             $request = $this->guzzleClient->get(sprintf('%s/actuator/health', $this->config['url']), ['timeout' => $timeout]);
+			$request = $this->guzzleClient->get(sprintf('%s/actuator/health', $this->config['url']), ['timeout' => $timeout]);
 
-		 	if ($request->getStatusCode() !== Response::HTTP_OK) {
-                $status = self::STATUS_FAIL;
-		 	}
-         } catch (\Exception $e) {
-             Log::warning('HEALTHCHECK: HttpChecker have catch', ['error' => $e->getMessage()]);
-             $status = self::STATUS_FAIL;
-         } catch (GuzzleException $e) {
-             Log::warning('HEALTHCHECK: HttpChecker have catch', ['error' => $e->getMessage()]);
-             $status = self::STATUS_FAIL;
-         }
+			if ($request->getStatusCode() !== Response::HTTP_OK) {
+				$status = self::STATUS_FAIL;
+			}
+		} catch (Exception $e) {
+			Log::warning('HEALTHCHECK: HttpChecker have catch', ['error' => $e->getMessage()]);
+			$status = self::STATUS_FAIL;
+		} catch (GuzzleException $e) {
+			Log::warning('HEALTHCHECK: HttpChecker have catch', ['error' => $e->getMessage()]);
+			$status = self::STATUS_FAIL;
+		}
 
-         return $status;
-    }
+		return $status;
+	}
 }
