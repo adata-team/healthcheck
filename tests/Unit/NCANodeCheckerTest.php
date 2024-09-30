@@ -7,7 +7,7 @@ use Adata\HealthChecker\Entities\HealthEntity;
 use Adata\HealthChecker\Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\HttpFoundation\Response as StatusCode;
 use Illuminate\Support\Facades\Log;
 
 /**
