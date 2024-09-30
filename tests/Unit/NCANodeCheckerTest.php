@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use \Symfony\Component\HttpFoundation\Response as StatusCode;
 use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * @covers \Adata\HealthChecker\Checkers\NCANodeChecker
