@@ -174,10 +174,10 @@ return [
             'port'    => 9000,
             'timeout' => 2,
         ],
-        'nca_node'    => [
-            'type'    => 'nca_node',
+		'nca_node' => [
+			'type'    => 'nca_node',
 			'url'     => 'https://example.com',
 			'timeout' => 2,
-        ],
+		],
     ],
 ];
